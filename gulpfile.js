@@ -1,5 +1,10 @@
 var gulp = require ('gulp'),
-watch = require('gulp-watch');
+watch = require('gulp-watch')
+postcss = require('gulp-postcss'),
+cssvars = require('postcss-simple-vars'),
+autoprefixer = require('autoprefixer'),
+nested = require('postcss-nested'),
+cssImport = require('postcss-import');
 
 
 gulp.task('default', function(){
@@ -11,9 +16,11 @@ gulp.task('html', function(){
 });
 
 gulp.task('styles', function(){
-	console.log("Something beind done to any of my css file");
+	return gulp.src('./app/assets/styles/styles.css')
+	.pipe(postcss([cssImport, cssvars, nested, autoprefixer]))
+	.pipe(gulp.dest('./app/temp/styles'));
 });
-
+ 
 gulp.task('watch', function(){
 	watch('./app/index.html', function(){
 		gulp.start('html');
